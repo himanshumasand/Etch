@@ -1,7 +1,9 @@
-package com.hmasand.etch;
+package com.hmasand.etch.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.hmasand.etch.R;
 
 public class HomeActivity extends AppCompatActivity {
 

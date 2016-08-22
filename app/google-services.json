@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "604158600517",
+    "firebase_url": "https://etch-d1bc1.firebaseio.com",
+    "project_id": "etch-d1bc1",
+    "storage_bucket": "etch-d1bc1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604158600517:android:ac6ce9e632de5c96",
+        "android_client_info": {
+          "package_name": "com.hmasand.etch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "604158600517-q2ajukeosiavn2bulgac34t8kal0keot.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCu1oWqqNPy0g3GWhXrbaX5pNpDKhGxcEM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
