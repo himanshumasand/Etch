@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hmasand.etch.R;
@@ -20,11 +21,15 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView tvEntry;
+        public TextView tvRichLinkTitle;
+        public TextView tvRichLinkDesc;
+        public ImageView ivRichLinkThumb;
 
         public ViewHolder(View v) {
             super(v);
-            tvEntry = (TextView) v.findViewById(R.id.tvEntry);
+            tvRichLinkTitle = (TextView) v.findViewById(R.id.tvRichLinkTitle);
+            tvRichLinkDesc = (TextView) v.findViewById(R.id.tvRichLinkDescription);
+            ivRichLinkThumb = (ImageView) v.findViewById(R.id.ivRichLinkThumbnail);
         }
     }
 
@@ -36,7 +41,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_entry, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_etch, parent, false);
 
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -45,7 +50,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tvEntry.setText(mEntries.get(position).getUrl());
+        holder.tvRichLinkTitle.setText(mEntries.get(position).getUrl());
+        holder.tvRichLinkDesc.setText(mEntries.get(position).getUrl());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
