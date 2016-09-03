@@ -36,6 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:text="Confirm"
+        android:id="@+id/btConfirm"
         android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

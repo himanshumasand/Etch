@@ -11,19 +11,26 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hmasand.etch.R;
+import com.hmasand.etch.models.RichLinkPreviewData;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by hmasand on 8/29/16.
  */
-public class CreateEtchDialog extends DialogFragment implements View.OnClickListener {
+public class CreateEtchDialog extends DialogFragment implements View.OnClickListener, RichLinkPreviewData.CreateRichLinkPreviewListener{
 
     private EditText mEtCreateEtch;
     private Button mBtEtch;
     private Button mBtCancel;
+    private Button mBtConfirm;
+    private LinearLayout mEtchItem;
 
     public CreateEtchDialog() {}
 
@@ -67,9 +74,12 @@ public class CreateEtchDialog extends DialogFragment implements View.OnClickList
         mEtCreateEtch = (EditText) view.findViewById(R.id.etCreateEtch);
         mBtEtch = (Button) view.findViewById(R.id.btEtch);
         mBtCancel = (Button) view.findViewById(R.id.btCancel);
+        mBtConfirm = (Button) view.findViewById(R.id.btConfirm);
+        mEtchItem = (LinearLayout) view.findViewById(R.id.llItem);
 
         mBtEtch.setOnClickListener(this);
         mBtCancel.setOnClickListener(this);
+        mBtConfirm.setOnClickListener(this);
 
         return view;
     }
@@ -79,18 +89,32 @@ public class CreateEtchDialog extends DialogFragment implements View.OnClickList
         switch (view.getId()) {
 
             case R.id.btEtch:
-                final CreateEtchDialogListener listener = (CreateEtchDialogListener) getActivity();
+                new RichLinkPreviewData(this, mEtCreateEtch.getText().toString());
+                break;
+
+            case R.id.btConfirm:
 
                 DatabaseReference entriesRef = FirebaseDatabase.getInstance().getReference().child("entries");
                 entriesRef.push().setValue(mEtCreateEtch.getText().toString());
 
+                final CreateEtchDialogListener listener = (CreateEtchDialogListener) getActivity();
                 listener.onCreateEtchSuccess();
                 dismiss();
-                break;
 
             case R.id.btCancel:
                 dismiss();
                 break;
         }
+    }
+
+    @Override
+    public void onCreateRichLinkPreviewSuccess(RichLinkPreviewData data) {
+        TextView tvRichLinkTitle = (TextView) mEtchItem.findViewById(R.id.tvRichLinkTitle);
+        TextView tvRichLinkDesc = (TextView) mEtchItem.findViewById(R.id.tvRichLinkDescription);
+
+        tvRichLinkTitle.setText(data.title);
+        tvRichLinkDesc.setText(data.description);
+
+
     }
 }
