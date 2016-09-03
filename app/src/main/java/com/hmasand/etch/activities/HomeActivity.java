@@ -72,7 +72,7 @@ public class HomeActivity extends AppCompatActivity implements CreateEtchDialog.
         });
 
         // specify an adapter
-        mAdapter = new HomeListAdapter(entries);
+        mAdapter = new HomeListAdapter(this, entries);
         mRvHomeList.setAdapter(mAdapter);
 
         mFabAdd = (FloatingActionButton) findViewById(R.id.fabAdd);

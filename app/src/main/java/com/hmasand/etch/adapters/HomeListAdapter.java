@@ -1,5 +1,6 @@
 package com.hmasand.etch.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.hmasand.etch.R;
 import com.hmasand.etch.models.RichLinkPreviewData;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ import java.util.List;
  */
 public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHolder> {
 
+    Context mContext;
     List<RichLinkPreviewData> mEntries;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -33,7 +36,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         }
     }
 
-    public HomeListAdapter(List<RichLinkPreviewData> entries) {
+    public HomeListAdapter(Context context, List<RichLinkPreviewData> entries) {
+        mContext = context;
         mEntries = entries;
     }
 
@@ -52,6 +56,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.tvRichLinkTitle.setText(mEntries.get(position).title);
         holder.tvRichLinkDesc.setText(mEntries.get(position).description);
+        Picasso.with(mContext).load(mEntries.get(position).imageUrl).resize(100, 100).centerCrop().into(holder.ivRichLinkThumb);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
