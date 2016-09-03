@@ -10,11 +10,16 @@ import com.leocardz.link.preview.library.TextCrawler;
 public class RichLinkPreviewData {
 
     public CreateRichLinkPreviewListener listener;
+
+    public String url;
     public String title;
     public String description;
     public String imageUrl;
 
-    public RichLinkPreviewData(String title, String description, String imageUrl) {
+    public RichLinkPreviewData() {}
+
+    public RichLinkPreviewData(String url, String title, String description, String imageUrl) {
+        this.url = url;
         this.title = title;
         this.description = description;
         this.imageUrl = imageUrl;
@@ -22,6 +27,7 @@ public class RichLinkPreviewData {
 
     public RichLinkPreviewData(CreateRichLinkPreviewListener listener, String url) {
         this.listener = listener;
+        this.url = url;
         new TextCrawler().makePreview(linkPreviewCallback, url);
     }
 
@@ -40,7 +46,7 @@ public class RichLinkPreviewData {
                 imageUrl = sourceContent.getImages().get(0);
             }
 
-            listener.onCreateRichLinkPreviewSuccess(new RichLinkPreviewData(title, description, imageUrl));
+            listener.onCreateRichLinkPreviewSuccess(new RichLinkPreviewData(url, title, description, imageUrl));
 
         }
     };

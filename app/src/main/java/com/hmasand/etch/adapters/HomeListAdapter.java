@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hmasand.etch.R;
-import com.hmasand.etch.models.Entry;
+import com.hmasand.etch.models.RichLinkPreviewData;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHolder> {
 
-    List<Entry> mEntries;
+    List<RichLinkPreviewData> mEntries;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -33,7 +33,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         }
     }
 
-    public HomeListAdapter(List<Entry> entries) {
+    public HomeListAdapter(List<RichLinkPreviewData> entries) {
         mEntries = entries;
     }
 
@@ -50,8 +50,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tvRichLinkTitle.setText(mEntries.get(position).getUrl());
-        holder.tvRichLinkDesc.setText(mEntries.get(position).getUrl());
+        holder.tvRichLinkTitle.setText(mEntries.get(position).title);
+        holder.tvRichLinkDesc.setText(mEntries.get(position).description);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

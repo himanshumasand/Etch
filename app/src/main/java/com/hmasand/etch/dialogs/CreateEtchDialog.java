@@ -19,8 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.hmasand.etch.R;
 import com.hmasand.etch.models.RichLinkPreviewData;
 
-import org.w3c.dom.Text;
-
 /**
  * Created by hmasand on 8/29/16.
  */
@@ -31,6 +29,8 @@ public class CreateEtchDialog extends DialogFragment implements View.OnClickList
     private Button mBtCancel;
     private Button mBtConfirm;
     private LinearLayout mEtchItem;
+
+    private RichLinkPreviewData rlpData;
 
     public CreateEtchDialog() {}
 
@@ -95,7 +95,7 @@ public class CreateEtchDialog extends DialogFragment implements View.OnClickList
             case R.id.btConfirm:
 
                 DatabaseReference entriesRef = FirebaseDatabase.getInstance().getReference().child("entries");
-                entriesRef.push().setValue(mEtCreateEtch.getText().toString());
+                entriesRef.push().setValue(rlpData);
 
                 final CreateEtchDialogListener listener = (CreateEtchDialogListener) getActivity();
                 listener.onCreateEtchSuccess();
@@ -112,9 +112,10 @@ public class CreateEtchDialog extends DialogFragment implements View.OnClickList
         TextView tvRichLinkTitle = (TextView) mEtchItem.findViewById(R.id.tvRichLinkTitle);
         TextView tvRichLinkDesc = (TextView) mEtchItem.findViewById(R.id.tvRichLinkDescription);
 
+        rlpData = data;
         tvRichLinkTitle.setText(data.title);
         tvRichLinkDesc.setText(data.description);
-
+        // Load image using picasso
 
     }
 }

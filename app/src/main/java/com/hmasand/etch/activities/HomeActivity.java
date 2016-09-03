@@ -18,7 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.hmasand.etch.R;
 import com.hmasand.etch.adapters.HomeListAdapter;
 import com.hmasand.etch.dialogs.CreateEtchDialog;
-import com.hmasand.etch.models.Entry;
+import com.hmasand.etch.models.RichLinkPreviewData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +52,7 @@ public class HomeActivity extends AppCompatActivity implements CreateEtchDialog.
         mRvHomeList.setLayoutManager(mLayoutManager);
 
         //Get data from database
-        final List<Entry> entries = new ArrayList<>();
+        final List<RichLinkPreviewData> entries = new ArrayList<>();
         DatabaseReference entriesRef = FirebaseDatabase.getInstance().getReference().child("entries");
         entriesRef.addValueEventListener(new ValueEventListener() {
 
@@ -60,9 +60,7 @@ public class HomeActivity extends AppCompatActivity implements CreateEtchDialog.
             public void onDataChange(DataSnapshot snapshot) {
                 entries.clear();
                 for(DataSnapshot entrySnapshot: snapshot.getChildren()) {
-                    Entry entry = new Entry(entrySnapshot.getValue().toString());
-                    Log.d("DEBUG", entry.getUrl());
-                    entries.add(entry);
+                    entries.add(entrySnapshot.getValue(RichLinkPreviewData.class));
                 }
                 mAdapter.notifyDataSetChanged();
             }
