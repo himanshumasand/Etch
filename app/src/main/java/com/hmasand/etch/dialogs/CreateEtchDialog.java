@@ -1,6 +1,9 @@
 package com.hmasand.etch.dialogs;
 
 import android.app.Dialog;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -11,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hmasand.etch.R;
 import com.hmasand.etch.models.RichLinkPreviewData;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by hmasand on 8/29/16.
@@ -40,9 +45,9 @@ public class CreateEtchDialog extends DialogFragment implements View.OnClickList
 
     public static CreateEtchDialog newInstance() {
         CreateEtchDialog dialog = new CreateEtchDialog();
-        Bundle args = new Bundle();
+//        Bundle args = new Bundle();
 //        args.putString("url", url);
-        dialog.setArguments(args);
+//        dialog.setArguments(args);
         return dialog;
     }
 
@@ -76,6 +81,13 @@ public class CreateEtchDialog extends DialogFragment implements View.OnClickList
         mBtCancel = (Button) view.findViewById(R.id.btCancel);
         mBtConfirm = (Button) view.findViewById(R.id.btConfirm);
         mEtchItem = (LinearLayout) view.findViewById(R.id.llItem);
+
+        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        if(clipboard.hasPrimaryClip() && clipboard.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+            mEtCreateEtch.setText(clipboard.getPrimaryClip().getItemAt(0).getText());
+            new RichLinkPreviewData(this, mEtCreateEtch.getText().toString());
+        }
+        mEtCreateEtch.requestFocus();
 
         mBtEtch.setOnClickListener(this);
         mBtCancel.setOnClickListener(this);
@@ -111,11 +123,12 @@ public class CreateEtchDialog extends DialogFragment implements View.OnClickList
     public void onCreateRichLinkPreviewSuccess(RichLinkPreviewData data) {
         TextView tvRichLinkTitle = (TextView) mEtchItem.findViewById(R.id.tvRichLinkTitle);
         TextView tvRichLinkDesc = (TextView) mEtchItem.findViewById(R.id.tvRichLinkDescription);
+        ImageView ivRichLinkThumb = (ImageView) mEtchItem.findViewById(R.id.ivRichLinkThumbnail);
 
         rlpData = data;
         tvRichLinkTitle.setText(data.title);
         tvRichLinkDesc.setText(data.description);
-        // Load image using picasso
+        Picasso.with(getContext()).load(data.imageUrl).resize(100, 100).centerCrop().into(ivRichLinkThumb);
 
     }
 }
