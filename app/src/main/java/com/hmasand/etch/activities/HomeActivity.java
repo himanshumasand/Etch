@@ -1,12 +1,15 @@
 package com.hmasand.etch.activities;
 
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -31,6 +34,8 @@ public class HomeActivity extends AppCompatActivity implements CreateEtchDialog.
 
     private FloatingActionButton mFabAdd;
 
+    private String mUrlString = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +43,21 @@ public class HomeActivity extends AppCompatActivity implements CreateEtchDialog.
 
         setupViewObjects();
 
+        handleIntentReceived();
+    }
+
+    private void handleIntentReceived() {
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null && "text/plain".equals(type)) {
+            String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+            if (sharedText != null) {
+                mUrlString = sharedText;
+                openCreateEtchDialog();
+            }
+        }
     }
 
     private void setupViewObjects() {
@@ -84,9 +104,22 @@ public class HomeActivity extends AppCompatActivity implements CreateEtchDialog.
         });
     }
 
+    private String getUrlString() {
+        String url = mUrlString;
+
+        if(url.isEmpty()) {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            if(clipboard.hasPrimaryClip() && clipboard.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+                url = clipboard.getPrimaryClip().getItemAt(0).getText().toString();
+            }
+        }
+
+        return url;
+    }
+
     public void openCreateEtchDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        CreateEtchDialog createEtchDialog = CreateEtchDialog.newInstance();
+        CreateEtchDialog createEtchDialog = CreateEtchDialog.newInstance(getUrlString());
         createEtchDialog.show(fm, "dialog_create_etch");
     }
     @Override

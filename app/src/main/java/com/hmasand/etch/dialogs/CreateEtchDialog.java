@@ -43,11 +43,11 @@ public class CreateEtchDialog extends DialogFragment implements View.OnClickList
         void onCreateEtchSuccess();
     }
 
-    public static CreateEtchDialog newInstance() {
+    public static CreateEtchDialog newInstance(String url) {
         CreateEtchDialog dialog = new CreateEtchDialog();
-//        Bundle args = new Bundle();
-//        args.putString("url", url);
-//        dialog.setArguments(args);
+        Bundle args = new Bundle();
+        args.putString("url", url);
+        dialog.setArguments(args);
         return dialog;
     }
 
@@ -82,12 +82,9 @@ public class CreateEtchDialog extends DialogFragment implements View.OnClickList
         mBtConfirm = (Button) view.findViewById(R.id.btConfirm);
         mEtchItem = (LinearLayout) view.findViewById(R.id.llItem);
 
-        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-        if(clipboard.hasPrimaryClip() && clipboard.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
-            mEtCreateEtch.setText(clipboard.getPrimaryClip().getItemAt(0).getText());
-            new RichLinkPreviewData(this, mEtCreateEtch.getText().toString());
-        }
+        mEtCreateEtch.setText(getArguments().getString("url"));
         mEtCreateEtch.requestFocus();
+        new RichLinkPreviewData(this, mEtCreateEtch.getText().toString());
 
         mBtEtch.setOnClickListener(this);
         mBtCancel.setOnClickListener(this);
