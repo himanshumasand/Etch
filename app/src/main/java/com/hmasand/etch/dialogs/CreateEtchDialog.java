@@ -109,6 +109,7 @@ public class CreateEtchDialog extends DialogFragment implements View.OnClickList
                 final CreateEtchDialogListener listener = (CreateEtchDialogListener) getActivity();
                 listener.onCreateEtchSuccess();
                 dismiss();
+                break;
 
             case R.id.btCancel:
                 dismiss();
