@@ -41,7 +41,9 @@
                 android:id="@+id/tvRichLinkDescription"
                 android:layout_below="@+id/tvRichLinkTitle"
                 android:layout_alignLeft="@id/tvRichLinkTitle"
-                android:textSize="10dp" />
+                android:textSize="10dp"
+                android:minLines="1"
+                android:maxLines="4"/>
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

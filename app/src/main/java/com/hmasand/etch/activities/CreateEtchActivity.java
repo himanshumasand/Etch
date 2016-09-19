@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -18,9 +19,6 @@ import com.hmasand.etch.models.RichLinkPreviewData;
 import com.squareup.picasso.Picasso;
 
 public class CreateEtchActivity extends AppCompatActivity implements RichLinkPreviewData.CreateRichLinkPreviewListener {
-
-    private Button mBtEtch;
-    private LinearLayout mEtchItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +30,10 @@ public class CreateEtchActivity extends AppCompatActivity implements RichLinkPre
     }
 
     private void handleIntentReceived() {
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        String type = intent.getType();
 
-        if (Intent.ACTION_SEND.equals(action) && type != null && "text/plain".equals(type)) {
-            String url = intent.getStringExtra(Intent.EXTRA_TEXT);
-            if (url != null) {
-                new RichLinkPreviewData(this, url);
-            }
+        String url = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+        if (url != null) {
+            new RichLinkPreviewData(this, url);
         }
     }
 
@@ -48,7 +41,7 @@ public class CreateEtchActivity extends AppCompatActivity implements RichLinkPre
     public void onCreateRichLinkPreviewSuccess(final RichLinkPreviewData data) {
         setContentView(R.layout.activity_create_etch);
 
-        mEtchItem = (LinearLayout) findViewById(R.id.llItem);
+        LinearLayout mEtchItem = (LinearLayout) findViewById(R.id.llItem);
         TextView tvRichLinkTitle = (TextView) mEtchItem.findViewById(R.id.tvRichLinkTitle);
         TextView tvRichLinkDesc = (TextView) mEtchItem.findViewById(R.id.tvRichLinkDescription);
         ImageView ivRichLinkThumb = (ImageView) mEtchItem.findViewById(R.id.ivRichLinkThumbnail);
@@ -57,12 +50,13 @@ public class CreateEtchActivity extends AppCompatActivity implements RichLinkPre
         tvRichLinkDesc.setText(data.description);
         Picasso.with(this).load(data.imageUrl).resize(100, 100).centerCrop().into(ivRichLinkThumb);
 
-        mBtEtch = (Button) findViewById(R.id.btEtch);
+        Button mBtEtch = (Button) findViewById(R.id.btEtch);
         mBtEtch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DatabaseReference entriesRef = FirebaseDatabase.getInstance().getReference().child("entries");
                 entriesRef.push().setValue(data);
+                Toast.makeText(getBaseContext(), "Link Etched!", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
